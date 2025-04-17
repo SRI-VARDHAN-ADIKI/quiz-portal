@@ -1,24 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
+
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Navbar from './components/Navbar';
+import SignUp from './components/Signup';
+import SignIn from './components/Signin';
+import Quiz from './components/Quiz';
+import AdminDashboard from './components/AdminDashboard';
+import './styles.css';
 
 function App() {
+  const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem('user'));
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Navbar isAuthenticated={isAuthenticated} setIsAuthenticated={setIsAuthenticated} />
+      <Routes>
+        <Route path="/signup" element={<SignUp />} />
+        <Route path="/signin" element={<SignIn setIsAuthenticated={setIsAuthenticated} />} />
+        <Route path="/quiz" element={<Quiz />} />
+        <Route path="/admin" element={<AdminDashboard />} />
+        <Route path="/" element={<SignIn setIsAuthenticated={setIsAuthenticated} />} />
+      </Routes>
+    </Router>
   );
 }
 
